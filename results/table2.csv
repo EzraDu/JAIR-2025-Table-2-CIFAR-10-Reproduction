@@ -1,0 +1,9 @@
+item,paper_percent,repro_percent,n,note
+CIFAR-10 test (false positive),4.74,8.60,10000,full CIFAR-10 test set
+CMI,94.48,90.97,10240,CMI repository source
+DAFL,95.95,99.55,10240,CMI dafl script; 200 epochs; last 10240 images
+DeepInv,79.98,73.37,10240,CMI deepinv script; 40 epochs; 1000 generator steps per image
+DFQ,97.25,80.48,10240,CMI dfq script; 200 epochs; last 10240 images
+IPR,98.26,95.67,10240,CMISynthesizer then vanilla_kd.py in the CMI repository
+ZSKT,88.77,91.05,10240,CMI zskt script; epochs 200; epoch 101 steps 40-79; existing Table 2 SVM
+six-attack mean,92.45,88.52,6,population std paper 6.35; repro 8.94
