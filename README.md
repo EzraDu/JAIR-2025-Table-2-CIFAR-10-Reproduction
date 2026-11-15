@@ -6,7 +6,7 @@
 
 ## 结果
 
-检测器只训练一次。ZSKT 与其余方法使用同一个 SVM。原始数字在 [results/table2.csv](results/table2.csv)。
+原始数字在 [results/table2.csv](results/table2.csv)。
 
 | 测试对象 | 论文 (%) | 本次 (%) | 张数 |
 | --- | ---: | ---: | ---: |
@@ -38,20 +38,20 @@ Windows 上 CMI 内部 DataLoader 的 `num_workers=4` 会在第一批之后卡�
 
 ## 检测器
 
-与作者 CIFAR-10 代码一致，PCA 不重拟合。
+PCA 不重拟合。
 
-- 受害者特征：WRN-40-2 的 `ReLU(BN(block3))`，128×8×8，展平 8192 维，用作者已有的 `[['cmi', 'ipr']]relu_512` PCA 降到 512 维（拟合样本数 126400）。
+- 受害者特征：WRN-40-2 的 `ReLU(BN(block3))`，128×8×8，展平 8192 维，用已有的 `[['cmi', 'ipr']]relu_512` PCA 降到 512 维（拟合样本数 126400）。
 - 图像特征：ImageNet ResNet18 去掉全连接层后的 512 维。输入用 CIFAR-10 的均值和方差，不用 ImageNet 归一化。
 - 拼成 1024 维，`SVC(kernel="rbf", class_weight="balanced")`。
 - 训练池：CIFAR-10 训练集、CMI、IPR 各 10240 张，种子 0 做 80/20。没有使用 `--match-single`。
 
-作者 PCA 经 sklearnex 读出后 `transform` 会缺 `n_jobs`。`reproduce_table2.py` 在导入 `function` 之前改用 scikit-learn 原版 `transform`。
+PCA 经 sklearnex 读出后 `transform` 会缺 `n_jobs`。`reproduce_table2.py` 在导入 `function` 之前改用 scikit-learn 原版 `transform`。
 
-`reproduce_table2.py` 需要和作者代码里的 `function.py`、`registry.py` 放在同一目录运行，并从该目录读取 `Invdata` 与 `checkpoints`。评 ZSKT 时不要重跑它，否则会重新拟合 SVM。ZSKT 的 10240 张由 `zskt_score_epoch101.py` 用已经保存的 SVM 打分。
+`reproduce_table2.py` 需要和`function.py`、`registry.py` 放在同一目录运行，并从该目录读取 `Invdata` 与 `checkpoints`。评 ZSKT 时不要重跑，否则会重新拟合 SVM。ZSKT 的 10240 张由 `zskt_score_epoch101.py` 用已经保存的 SVM 打分。
 
 ## 脚本
 
-运行前设置 `CMI_ROOT`（CMI 仓库根目录）和 `INVDET_ROOT`（作者检测代码根目录）。未设置时按相对路径 `CMI`、`invdet` 查找。
+运行前设置 `CMI_ROOT`（CMI 仓库根目录）和 `INVDET_ROOT`（检测代码根目录）。未设置时按相对路径 `CMI`、`invdet` 查找。
 
 | 文件 | 作用 |
 | --- | --- |
